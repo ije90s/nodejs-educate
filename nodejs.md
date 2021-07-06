@@ -21,3 +21,30 @@
 * dependencies를 다르게 설정되어 있다고 하더라도 모든 건 node_modules 폴더에 저장되며 package.json은 텍스트파일이므로 수정 가능  
 - nodemon : 파일이 수정되는 걸 감시해주는 패키지 >> 일일이 수정할때마다 npm run ~ 파일 실행할 필요 X 
             [설치](https://babeljs.io/setup#installation)
+
+2. express [상세](https://expressjs.com/ko/4x/api.html#app)
+- 객체 사용 시, 상단에 import 처리 필수(node_modules(dir)에서 express를 찾아서 import) 예) import express from "express" 
+- application*** 사용할 때는 객체 선언 예) const app = express(); 
+- 객체 선언 후에 서버 실행 예) app.listen(포트, 콜백) == addEventListener 확인 : localhost:4000 
+- Request : 사이트 접속, 버튼 클릭과 같은 사용자(브라우저)에서 오는 http request.
+            response를 하지 않으면 브라우저가 무한 루프(cannot get /) 예) app.get("/", handleHome); >> handleHome에서 req에 대한 res 처리 
+- Response : 해당 URI의 request에 대한 처리. 
+             예) const handleHome = (req, res) => {
+                    return res.send("<h1>ddd</h1>"); // res.end()로도 가능. res.end() : kill 
+                }; >> req, res object를 express에서 보내주는데 이 안에는 많은 정보들이 담겨져 있음
+- Middleware : 작업을 다음 함수에게 넘기는 함수로, 응답하는 함수 X >> req, res 사이에 있음
+               대부분 마지막으로 호출되는 함수가 return >> 무조건 마지막 함수가 return이 되는 것이 아니고 중간에 다른 함수가 return할 수 있음. 그럴 경우에는 그 다음 함수 실행 X (response 해줄때까지는 모든 controller가 middleware) 
+               모든 controller(==handler)가 middleware가 될 수 있으며, req, res, next 인자값을 가지고 있음(next 인자 생략 가능) >> 관습적으로 마지막 contrller는 netx 인자 생략. 중간 middleware은 꼭 순서대로 인자 입력
+               next() : 다음 함수 호출 예) app.get("/login", handleMiddle, handleLogin); >> handleMiddle : Middleware, handleLogin : 마지막 함수  
+               const handleMiddle = (req, res, next) =>{
+                    console.log(`${req.method} ${req.url}`);
+                    next(); // 다음 함수 호출 
+                };
+               app.use() : global middleware 예) app.use(logger); >> 모든 route가 app.use를 거침 
+                           app.use() 보다 먼저 선언하면, 먼저 실행되므로 순서 중요** >> global을 먼저 실행하려면 먼저 선언 
+               morgan : extral middleware 모듈로, request logger middleware [상세](https://www.npmjs.com/package/morgan)
+                        직접 global middleware 하는 것처럼 차이가 없고 기능 동일. 단순히 http request에 대한 정보가 깔끔하게 나옴 ![morgan](./src/images/morgan.png)
+                        morgan 설치, import 후 사용 가능. 사용의 예) morgan("dev"); >> 속성(dev)에 따라 다양한 정보를 보여줌 
+                        morgan도 next가 있기 때문에 middleware(해당 내용은 깃허브에서 확인 가능)
+* 서버 역할 : request를 listen한 다음에 resposne 
+* http request : 웹사이트에 접속하고 서버에 정보를 보내는 방법  
