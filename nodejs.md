@@ -85,3 +85,37 @@
 ※ 서버 역할 : request를 listen한 다음에 resposne >> 개발자가 response에 대한 구현
 
 ※ http request : 웹사이트에 접속하고 서버에 정보를 보내는 방법  
+
+- Router : 컨트롤러와 url의 관리. >> 작업 중인 주제를 기반으로 url을 그룹으로 정리
+
+           라우터 안에 라우터를 넣을 수 있음
+
+           선언 : const gloalRouter = express.Router(); 
+
+           사용 : app.use("/", globalRouter);  == express가 해당 경로로 접근해서 globalRouter에 있는 컨트롤러를 찾음 
+
+                  server.js(main)에 모든 라우터를 지정하는 것보다는 라우터용 폴더를 따로 만들어서 관리하는 것이 편리함(위치 : ./src/routes/경로별_라우터.js)
+                  
+                  각 라우터 별로 라우터 경로를 정의하며, 각 파일마다 독립적으로 운영되고 있기 때문에 필요한 모듈은 항상 import처리 >> 이미 다른 파일에서 import했더라도 다시 import
+
+                  export하기 전에는 각 파일들은 private상태이기 때문에 파일의 내용을 공유하기 위해서는 **export 먼저 처리** 
+
+                  export 처리 : export default 변수(한개만 가능) or export const 변수s(여러개 export 가능)
+
+                  예) export default gloalRouter;
+
+                      import globalRouter from "./routers/globalRouter";  // 변수명을 원하는 대롤 지정 가능
+
+                      export const trending = (req, res) => res.send("Home Page Videos"); 
+
+                      export const search = (req, res) => res.send("Search"); 
+
+                      import {trending, search} from "../controllers/videoConroller";  //export하는 변수명과 동일하게, object 형태로 지정
+
+            파라미터 사용 : ":변수명" 이용. 예) videoRouter.get("/:id(\\d+)", see);  //숫자만 허용
+
+                           만약에 숫자만 가능하고 나머지는 불가능할 경우, 정규식으로 제한 가능 >> 제한을 하지 않으면 숫자 외 나머지 것들도 접근 가능 예) /upload 
+
+※ 컨트롤러 : 함수, 라우터 : 그 함수를 단순히 이용하므로 라우터와 컨트롤러 섞여 쓰지 않는 것이 나음 
+
+※ ./ : 현재위치, ../ : 상위 폴더로 이동
