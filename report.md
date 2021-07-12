@@ -3,6 +3,7 @@
 ![포트충돌오류](./src/images/포트오류.png)
 
 원인 : 동일 포트로 인하여 발생
+
 해결 : 해당 포트 kill 
 
        Windows) 프로세스 확인하기 : netstat /o -na 
