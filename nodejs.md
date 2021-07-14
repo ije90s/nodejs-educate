@@ -106,3 +106,7 @@
                            만약에 숫자만 가능하고 나머지는 불가능할 경우, 정규식으로 제한 가능 >> 제한을 하지 않으면 숫자 외 나머지 것들도 접근 가능 예) /upload 
 ※ 컨트롤러 : 함수, 라우터 : 그 함수를 단순히 이용하므로 라우터와 컨트롤러 섞여 쓰지 않는 것이 나음 
 ※ ./ : 현재위치, ../ : 상위 폴더로 이동
+
+- mysql 패키지 : [상세](https://darrengwon.tistory.com/688)
+- 트랜잭션 : [상세](https://www.npmjs.com/package/mysql#transactions)
+- mysql 다중 처리 : [상세](https://junspapa-itdev.tistory.com/10) 
